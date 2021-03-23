@@ -14,11 +14,30 @@ type page struct {
 
 func main() {
 	respchan := make(chan page)
-	urls := []string { "http://www.rt.com", "http://www.rantingly.com", "http://www.bing.com"}
+	urls := []string { "http://www.rt.com", "http://www.rantingly.com", "http://www.bing.com", 
+	"http://www.stopthevaccine.com" }
 
 	for _, url := range urls {
 		go responseSize(url, respchan)
 	}
+/*
+	respcnt := 0 
+	for {
+		select {
+		case resp, ok := <-respchan :
+			if ok {
+				fmt.Printf("Getting %s: %v\n", resp.url, resp.size)
+				respcnt++ 
+				if respcnt == len(urls) {
+					fmt.Println("Se acabó...")
+					return 
+				}
+			} else {
+				return 
+			}
+		}
+	}
+	*/
 	
 	for range urls {
 		resp := <-respchan
